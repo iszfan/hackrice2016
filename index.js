@@ -21,6 +21,8 @@ function postImage(req, res) {
 	var imgUrl = req["file"]["path"];
 	var img_content;
 
+	// var imgUrl='f4a05d3a8f0738b104a9127e02c6096d'
+
 	console.log("image url is", imgUrl);
 	
 
@@ -28,22 +30,6 @@ function postImage(req, res) {
 	var command = "python python/pytesseract.py -f /home/ec2-user/hackrice2016/uploads/"+imgUrl+ " -t /usr/local/bin/tesseract"
 
 
-	// var child = spawn(command);
-	// console.log("command"+command);
-
-	// child.stdout.on('data', function(data) {
-	//     console.log('stdout: ' + data)
-	//     //Here is where the output goes
-	//     img_content = data
-	// });
-	// child.stderr.on('data', function(data) {
-	//     console.log('stdout: ' + data);
-	//     //Here is where the error output goes
-	// });
-	// child.on('close', function(code) {
-	//     console.log('closing code: ' + code);
-	//     //Here you can get the exit code of the script
-	// });
 
 	// executes `pwd`
 	child = exec("pwd", function (error, stdout, stderr) {
@@ -57,19 +43,21 @@ function postImage(req, res) {
 	  if (error !== null) {
 	    console.log('exec error: ' + error);
 	  }
-	});
 
-	//get image url
+	  //get image url
 	if (img_content) {
-		Bing.images(req.params.keyword, {skip: 50}, function(error, res, body){
+		Bing.images(img_content, {skip: 50}, function(error, result, body){
 	  		response = body["d"]["results"][0]["MediaUrl"].toString();
 	  		console.log(response);
+			res.send({result: "success", imageUrl: response});
 		});
 	} else {
 		console.log("no img content received")
 	}
+	});
+
 	 
-	res.send({result: "success", imageUrl: response});
+	
 }
 
 function getSample(req, res) {
@@ -83,6 +71,7 @@ app.get('/:keyword', function(req, res) {
 	
 });
 
+app.get('/test', postImage);
 app.post('/image', uploadFile('post'), postImage);
 
 
