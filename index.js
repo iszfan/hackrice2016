@@ -28,21 +28,35 @@ function postImage(req, res) {
 	var command = "python python/pytesseract.py -f /home/ec2-user/hackrice2016/uploads/"+imgUrl+ " -t /usr/local/bin/tesseract"
 
 
-	var child = spawn(command);
-	console.log("command"+command);
+	// var child = spawn(command);
+	// console.log("command"+command);
 
-	child.stdout.on('data', function(data) {
-	    console.log('stdout: ' + data)
-	    //Here is where the output goes
-	    img_content = data
-	});
-	child.stderr.on('data', function(data) {
-	    console.log('stdout: ' + data);
-	    //Here is where the error output goes
-	});
-	child.on('close', function(code) {
-	    console.log('closing code: ' + code);
-	    //Here you can get the exit code of the script
+	// child.stdout.on('data', function(data) {
+	//     console.log('stdout: ' + data)
+	//     //Here is where the output goes
+	//     img_content = data
+	// });
+	// child.stderr.on('data', function(data) {
+	//     console.log('stdout: ' + data);
+	//     //Here is where the error output goes
+	// });
+	// child.on('close', function(code) {
+	//     console.log('closing code: ' + code);
+	//     //Here you can get the exit code of the script
+	// });
+
+	// executes `pwd`
+	child = exec("pwd", function (error, stdout, stderr) {
+
+
+	  sys.print('stdout: ' + stdout);
+	  sys.print('stderr: ' + stderr);
+	  setTimeout(function() {
+	  	console.log("waiting to print");
+	  }, 5000);
+	  if (error !== null) {
+	    console.log('exec error: ' + error);
+	  }
 	});
 
 	//get image url
