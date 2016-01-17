@@ -29,7 +29,8 @@ function uploadFile(prefix) {
                 if (req.file) {
                     // we got an upload, now move the file
                     console.log("got a file");
-                    rename(prefix, req, res, next)    
+                    rename(prefix, req, res, next) 
+                    next()   
                 } else {
                     // if there's no file then proceed
                     console.log("there is no file")
