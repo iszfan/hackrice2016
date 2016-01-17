@@ -16,18 +16,21 @@ var Bing = require('node-bing-api')({ accKey: "fJa9Rz0oU9/2O+Nq6tL9wZN8EZPhqf7lW
 var port = process.env.PORT || 8080;        // set our port
 
 
+
 function postImage(req, res) {
-	var imgUrl = req.fileurl;
+	var imgUrl = req["file"]["path"];
 	var img_content;
 
 	console.log("image url is", imgUrl);
 	
 
 	//get words from the image
-	var command = "python pytesseract.py -f /home/ec2-user/hackrice2016/uploads/"+imgUrl+ ".jpg -t /usr/local/bin/tesseract"
+	var command = "python python/pytesseract.py -f /home/ec2-user/hackrice2016/uploads/"+imgUrl+ " -t /usr/local/bin/tesseract"
 
 
 	var child = spawn(command);
+	console.log("command"+command);
+
 	child.stdout.on('data', function(data) {
 	    console.log('stdout: ' + data)
 	    //Here is where the output goes
